@@ -3,14 +3,12 @@ package com.example.vehicle_dealership_API.controllers;
 
 import com.example.vehicle_dealership_API.entities.Vehicle;
 import com.example.vehicle_dealership_API.services.VehicleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +33,34 @@ public class VehicleController {
     ){
         List<Vehicle> vehicles = vehicleService.searchVehicles(vin,minPrice,
                 maxPrice,make,model,color,minYear,maxYear);
-        return  ResponseEntity.ok(vehicles);
+        if(vehicles.isEmpty()){
+            return new ResponseEntity<>(vehicles,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(vehicles, HttpStatus.OK);
+    }
+    @PostMapping
+    public ResponseEntity<Vehicle> createVehicle(@RequestBody @Valid Vehicle vehicle){
+        Vehicle newVehicle = this.vehicleService.create(vehicle);
+        return  new ResponseEntity<>(newVehicle, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{vin}")
+    public ResponseEntity<Vehicle> updateVehicle(@RequestBody @Valid Vehicle vehicle,
+                                                 @PathVariable String vin){
+        Vehicle updatedVehicle = this.vehicleService.update(vin, vehicle);
+        if(updatedVehicle == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(updatedVehicle, HttpStatus.OK);
+        }
+    }
+    @DeleteMapping("/{vin}")
+    public ResponseEntity<Void> deleteVehicle(@PathVariable String vin){
+        boolean deleteSuccessful = this.vehicleService.delete(vin);
+        if(!deleteSuccessful){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 }

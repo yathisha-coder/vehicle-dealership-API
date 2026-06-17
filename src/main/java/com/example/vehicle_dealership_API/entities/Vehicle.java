@@ -4,19 +4,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "vehicles")
 public class Vehicle {
     @Id
+    @NotBlank(message = "Vin is required")
     private String vin;
 
     //Validation
-    @NotBlank(message = "Year is required")
+    @NotNull(message = "Year is required")
     @Positive(message = "Year must be a positive number")
     private Integer year;
 
@@ -33,11 +31,12 @@ public class Vehicle {
     @NotBlank(message = "VehicleType is required")
     @Size(min = 1, max = 100, message = "VehicleType must be between 1 and 100 characters")
     @Column(nullable = false, length = 100)
-
     private String vehicleType;
-    @NotBlank(message = "OdoMeter is required")
+
+    @NotNull(message = "OdoMeter is required")
     @Positive(message = "OdoMeter must be a positive number")
     private Integer odoMeter;
+
     @NotBlank(message = "Color is required")
     @Size(min = 1, max = 100, message = "color must be between 1 and 100 characters")
     @Column(nullable = false, length = 100)
