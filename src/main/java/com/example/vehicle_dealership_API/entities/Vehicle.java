@@ -46,6 +46,8 @@ public class Vehicle {
     @PositiveOrZero(message = "Price cannot be negative")
     private double price;
 
+    public Vehicle(){}
+
     public Vehicle(String vin, int year, String make, String model, String vehicleType, int odoMeter, String color, double price) {
         this.vin = vin;
         this.year = year;
