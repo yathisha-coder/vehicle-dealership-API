@@ -1,9 +1,6 @@
 package com.example.vehicle_dealership_API.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
@@ -43,11 +40,17 @@ public class Vehicle {
     private String color;
 
     @PositiveOrZero(message = "Price cannot be negative")
-    private double price;
+    private Double price;
+
+    @ManyToOne
+    @JoinColumn(name = "dealership_id")
+    private Dealership dealership;
 
     public Vehicle(){}
 
-    public Vehicle(String vin, int year, String make, String model, String vehicleType, int odoMeter, String color, double price) {
+    public Vehicle(String vin, Integer year, String make, String model,
+                   String vehicleType, Integer odoMeter, String color,
+                   Double price, Dealership dealership) {
         this.vin = vin;
         this.year = year;
         this.make = make;
@@ -56,6 +59,7 @@ public class Vehicle {
         this.odoMeter = odoMeter;
         this.color = color;
         this.price = price;
+        this.dealership = dealership;
     }
 
     public String getVin() {
@@ -66,11 +70,11 @@ public class Vehicle {
         this.vin = vin;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -98,11 +102,11 @@ public class Vehicle {
         this.vehicleType = vehicleType;
     }
 
-    public int getOdoMeter() {
+    public Integer getOdoMeter() {
         return odoMeter;
     }
 
-    public void setOdoMeter(int odoMeter) {
+    public void setOdoMeter(Integer odoMeter) {
         this.odoMeter = odoMeter;
     }
 
@@ -114,11 +118,19 @@ public class Vehicle {
         this.color = color;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Dealership getDealership() {
+        return dealership;
+    }
+
+    public void setDealership(Dealership dealership) {
+        this.dealership = dealership;
     }
 }

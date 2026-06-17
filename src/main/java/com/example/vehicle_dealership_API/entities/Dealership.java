@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
 @Table(name = "dealerships")
 public class Dealership {
@@ -22,10 +24,15 @@ public class Dealership {
     @Column(nullable = false, length = 200)
     private String address;
 
-    @NotBlank(message = "Phone")
+    @NotBlank(message = "Phone number is required")
     @Size(min = 1, max = 100, message = "Phone must be between 1 and 100")
     @Column(nullable = false, length = 100)
     private String phone;
+
+    @OneToMany(mappedBy = "dealership")
+    private List<Vehicle> vehicles;
+
+    public Dealership(){}
 
     public Dealership(Long dealershipId, String name, String address, String phone) {
         this.dealershipId = dealershipId;
